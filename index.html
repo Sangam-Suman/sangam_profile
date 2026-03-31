@@ -1,83 +1,696 @@
 <!DOCTYPE html>
-<!-- Declaration that it is a html document -->
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <title> 😈Sangam's Personal Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sangam Suman | AI & ML Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-hover: #1f2937;
+            --accent: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --border: #30363d;
+            --gradient: linear-gradient(135deg, #58a6ff, #bc8cff);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── Animated background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 60% 40% at 70% 20%, rgba(88,166,255,.08) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 20% 80%, rgba(188,140,255,.07) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(12px);
+            background: rgba(13,17,23,.85);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: .9rem;
+            transition: color .2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* ── Wrapper ── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+        }
+
+        .hero-inner {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .avatar-wrap {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .avatar-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--gradient);
+            animation: spin 6s linear infinite;
+            opacity: .7;
+        }
+
+        .avatar-wrap img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--bg);
+            position: relative;
+            z-index: 1;
+            display: block;
+        }
+
+        .avatar-fallback {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            z-index: 1;
+            border: 4px solid var(--bg);
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: .5rem;
+        }
+
+        .hero-text h1 a {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: opacity .2s;
+        }
+        .hero-text h1 a:hover { opacity: .8; }
+
+        .hero-subtitle {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-green);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent-green);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink .7s step-end infinite;
+        }
+
+        .hero-bio {
+            color: var(--text-muted);
+            font-size: .95rem;
+            max-width: 520px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .55rem 1.2rem;
+            border-radius: 6px;
+            font-size: .875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all .2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0d1117;
+        }
+        .btn-primary:hover {
+            background: #79c0ff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(88,166,255,.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        /* ── Section shared ── */
+        section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color .2s, transform .2s, box-shadow .2s;
+        }
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.4);
+        }
+
+        /* ── Skills ── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            transition: all .2s;
+        }
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .75rem;
+        }
+        .skill-name { font-weight: 500; font-size: .95rem; }
+        .skill-pct {
+            font-family: 'Fira Code', monospace;
+            font-size: .8rem;
+            color: var(--accent);
+        }
+
+        .skill-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: var(--gradient);
+            width: 0;
+            transition: width 1.2s cubic-bezier(.25,.46,.45,.94);
+        }
+
+        /* ── Education ── */
+        .timeline { position: relative; padding-left: 1.75rem; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 6px; bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.875rem;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+        }
+
+        .timeline-item .card { margin: 0; }
+        .timeline-date {
+            font-family: 'Fira Code', monospace;
+            font-size: .75rem;
+            color: var(--accent-green);
+            margin-bottom: .3rem;
+        }
+        .timeline-title { font-weight: 600; font-size: 1rem; margin-bottom: .25rem; }
+        .timeline-sub { color: var(--text-muted); font-size: .875rem; }
+
+        /* ── Certifications ── */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            transition: all .2s;
+        }
+        .cert-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.35);
+        }
+
+        .cert-issuer {
+            font-size: .75rem;
+            color: var(--accent-green);
+            font-family: 'Fira Code', monospace;
+        }
+        .cert-name { font-weight: 600; font-size: .95rem; line-height: 1.4; }
+        .cert-meta { font-size: .8rem; color: var(--text-muted); }
+        .cert-link {
+            margin-top: auto;
+            align-self: flex-start;
+            color: var(--accent);
+            font-size: .8rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .25rem;
+            transition: gap .2s;
+        }
+        .cert-link:hover { gap: .5rem; }
+
+        /* ── Badge row (stat counters) ── */
+        .stats-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .stat-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: .5rem 1rem;
+            text-align: center;
+        }
+        .stat-badge .num {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-badge .label { font-size: .75rem; color: var(--text-muted); }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: .85rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ── Scroll-reveal ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Keyframes ── */
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            nav { padding: .75rem 1rem; }
+            .nav-links { display: none; }
+            .hero-inner { flex-direction: column; text-align: center; }
+            .hero-actions { justify-content: center; }
+            .avatar-wrap::before { display: none; }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- <img src="https://media.licdn.com/dms/image/C4D03AQGC3jEzSX4H9A/profile-displayphoto-shrink_400_400/0/1653241453900?e=1678320000&v=beta&t=hHgFnjls13OOuZx0pgu2ByuCFiVp4Yu8erSstgu3LqM" alt ="Sangam Suman Profile Picture"> -->
-    <img src="..\images\Me_profile.jpg" alt="Sangam Suman's Profile Picture" height="300px" width="300">
-    <h1><a href ="https://www.linkedin.com/in/sangamsuman/">Sangam Suman</a></h1>
-    <p><em>Undergraduate in <strong>CSE - AI & ML </strong></em></p>
-    <p>I am a passionate programmer with extensive experience in C, C++, Python, and Machine Learning. I have recently
-        started my first steps in learning web development as well as supervised learning and I am actively pursuing
-        this field. I have a keen interest in exploring the latest technologies and trends in the field of computer
-        science.
-        I am an enthusiastic learner, always looking to expand my knowledge and skills. I have a great eye for detail
-        and I am always looking for ways to improve my code.
-        With my strong programming skills and enthusiasm for learning, I am confident that I can bring value to any
-        project. I am committed to staying up-to-date with the latest trends in the field of computer science and I am
-        eager to apply my knowledge and skills to help businesses reach their goals.
-    </p>
-    <hr size="1" noshade>
 
-    <p>
-    <h2>Education :</h2>
-    <ul>
-        <li><strong>CHANDIGARH UNIVERSITY</strong><br>Bachelor of Engineering - BE, CSE (Hons.) with specialization in
-            AIML in
-            association with IBM · (June 2021 - June 2025)
+    <!-- Nav -->
+    <nav>
+        <span class="nav-logo">&lt;sangam /&gt;</span>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+        </ul>
+    </nav>
 
-        </li>
+    <!-- Hero -->
+    <section class="hero" id="about">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="avatar-wrap">
+                    <div class="avatar-fallback">&#128526;</div>
+                </div>
+                <div class="hero-text">
+                    <p class="hero-subtitle">
+                        <span id="typed-text"></span><span class="typing-cursor"></span>
+                    </p>
+                    <h1><a href="https://www.linkedin.com/in/sangamsuman/" target="_blank">Sangam Suman</a></h1>
+                    <p class="hero-bio">
+                        Passionate programmer with experience in C, C++, Python, and Machine Learning.
+                        Currently diving deep into web development and supervised learning while pursuing
+                        a B.E. in CSE (AI & ML) at Chandigarh University.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="https://www.linkedin.com/in/sangamsuman/" target="_blank" class="btn btn-primary">
+                            &#128101; LinkedIn
+                        </a>
+                        <a href="#certifications" class="btn btn-outline">
+                            &#127942; Certifications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <br>
+    <!-- Stats -->
+    <div class="container reveal" style="padding-bottom: 2rem;">
+        <div class="stats-row">
+            <div class="stat-badge"><span class="num" data-target="3">0</span><span class="label">Certifications</span></div>
+            <div class="stat-badge"><span class="num" data-target="4">0</span><span class="label">Years Study</span></div>
+            <div class="stat-badge"><span class="num" data-target="5">0</span><span class="label">Core Skills</span></div>
+        </div>
+    </div>
 
-        <li>
-            <strong>ASHOK MEMORIAL PUBLIC SCHOOL - India</strong><br>(April 2010 - May 2019)
-        </li>
+    <!-- Skills -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Top Skills</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">C++</span>
+                        <span class="skill-pct">90%</span>
+                    </div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">Python</span>
+                        <span class="skill-pct">85%</span>
+                    </div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">MySQL</span>
+                        <span class="skill-pct">75%</span>
+                    </div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">Machine Learning</span>
+                        <span class="skill-pct">80%</span>
+                    </div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+                </div>
+                <div class="skill-card reveal">
+                    <div class="skill-header">
+                        <span class="skill-name">Web Development</span>
+                        <span class="skill-pct">60%</span>
+                    </div>
+                    <div class="skill-bar"><div class="skill-fill" data-width="60"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    </ul>
-    </p>
-    <hr size="1" noshade>
+    <!-- Education -->
+    <section id="education">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Education</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="card">
+                        <div class="timeline-date">June 2021 &mdash; June 2025</div>
+                        <div class="timeline-title">Chandigarh University</div>
+                        <div class="timeline-sub">B.E. &mdash; CSE (Hons.) · AI &amp; ML · IBM Association</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="card">
+                        <div class="timeline-date">April 2010 &mdash; May 2019</div>
+                        <div class="timeline-title">Ashok Memorial Public School</div>
+                        <div class="timeline-sub">India</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <h2>Top Skills :</h2>
-    <ol type="1" start="1">
-        <li>C++</li>
-        <li>Python</li>
-        <li>MySQL</li>
-    </ol>
+    <!-- Certifications -->
+    <section id="certifications">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Certifications</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="certs-grid">
+                <div class="cert-card reveal">
+                    <span class="cert-issuer">IIT Madras · NPTEL</span>
+                    <span class="cert-name">The Joy of Computing using Python</span>
+                    <span class="cert-meta">Credential ID: NPTEL22CS31S1387103102181245</span>
+                    <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL22CS31S1387103102181245" target="_blank" class="cert-link">
+                        Show credential &#8594;
+                    </a>
+                </div>
+                <div class="cert-card reveal">
+                    <span class="cert-issuer">HackDefine 2022</span>
+                    <span class="cert-name">Cloudy Engineer</span>
+                    <span class="cert-meta">Issued May 2022 &nbsp;·&nbsp; ID: 50eb76d3-b8bc-414a-b300-7403f4dc750e</span>
+                    <a href="https://certificate.givemycertificate.com/c/50eb76d3-b8bc-414a-b300-7403f4dc750e" target="_blank" class="cert-link">
+                        Show credential &#8594;
+                    </a>
+                </div>
+                <div class="cert-card reveal">
+                    <span class="cert-issuer">DeepLearning.AI · Coursera</span>
+                    <span class="cert-name">Supervised Machine Learning: Regression and Classification</span>
+                    <span class="cert-meta">Issued Dec 2022 &nbsp;·&nbsp; ID: 9BAFYKJ7E3SL</span>
+                    <a href="https://coursera.org/verify/9BAFYKJ7E3SL" target="_blank" class="cert-link">
+                        Show credential &#8594;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <hr size="1" noshade>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Designed & built by <a href="https://www.linkedin.com/in/sangamsuman/">Sangam Suman</a> &nbsp;&middot;&nbsp; 2025</p>
+        </div>
+    </footer>
 
-    <h2>Certifications :</h2>
-    <ul>
-        <li><strong>The Joy of Computing using Python</strong><br>
-            Indian Institute of Technology, Madras<br>
-            Credential ID NPTEL22CS31S1387103102181245<br>
-             <a href ="https://nptel.ac.in/noc/E_Certificate/NPTEL22CS31S1387103102181245">Show credential</a></li>
+    <script>
+        /* ── Typing effect ── */
+        const phrases = [
+            'Undergraduate · CSE AI & ML',
+            'C++ & Python Developer',
+            'ML Enthusiast',
+            'Web Developer in Progress',
+        ];
+        let pi = 0, ci = 0, deleting = false;
+        const el = document.getElementById('typed-text');
 
-        <li><strong>HackDefine 2022 : Cloudy Engineer</strong><br>
-              Issued May 2022 <br>
-              Credential ID 50eb76d3-b8bc-414a-b300-7403f4dc750e<br>
-              <a href ="https://certificate.givemycertificate.com/c/50eb76d3-b8bc-414a-b300-7403f4dc750e">Show credential</a>
-        </li>
+        function type() {
+            const phrase = phrases[pi];
+            if (!deleting) {
+                el.textContent = phrase.slice(0, ++ci);
+                if (ci === phrase.length) {
+                    deleting = true;
+                    setTimeout(type, 1800);
+                    return;
+                }
+            } else {
+                el.textContent = phrase.slice(0, --ci);
+                if (ci === 0) {
+                    deleting = false;
+                    pi = (pi + 1) % phrases.length;
+                }
+            }
+            setTimeout(type, deleting ? 45 : 80);
+        }
+        type();
 
-        <li><strong>Supervised Machine Learning: Regression and Classification</strong>
-            DeepLearning.AI<br>
-            Issued Dec 2022<br>
-            Credential ID 9BAFYKJ7E3SLCredential<br>
-            <a href ="https://coursera.org/verify/9BAFYKJ7E3SL">Show credential</a>
-        </li>
-    </ul>
+        /* ── Scroll reveal ── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    /* Animate skill bars */
+                    e.target.querySelectorAll('.skill-fill').forEach(bar => {
+                        bar.style.width = bar.dataset.width + '%';
+                    });
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.15 });
 
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        /* ── Counter animation ── */
+        function animateCount(el) {
+            const target = +el.dataset.target;
+            let cur = 0;
+            const step = Math.ceil(target / 30);
+            const tick = setInterval(() => {
+                cur = Math.min(cur + step, target);
+                el.textContent = cur;
+                if (cur >= target) clearInterval(tick);
+            }, 40);
+        }
 
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.querySelectorAll('[data-target]').forEach(animateCount);
+                    counterObserver.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.3 });
 
+        document.querySelectorAll('.stats-row').forEach(el => counterObserver.observe(el.closest('.reveal') || el));
 
+        /* trigger counter for stat badges directly */
+        document.querySelectorAll('.stat-badge .num').forEach(num => {
+            const io = new IntersectionObserver(([e]) => {
+                if (e.isIntersecting) { animateCount(num); io.disconnect(); }
+            }, { threshold: 0.5 });
+            io.observe(num);
+        });
+    </script>
 
 </body>
-
 </html>
